@@ -97,3 +97,13 @@ CREATE TABLE banners (
 -- Seed Data: Banners
 INSERT INTO banners (title, subtitle, image_url) VALUES 
 ('Grand Opening Sale', 'Get 50% off on all electronics this week!', 'https://placehold.co/1200x300/1e3a8a/white?text=Grand+Opening');
+
+-- 9. Categories Table
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Seed Data: Categories
+INSERT INTO categories (name) VALUES ('Apparel'), ('Electronics'), ('Home'), ('Footwear');

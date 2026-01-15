@@ -31,7 +31,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
-    fetch('api.php?action=register', {
+    fetch('api/api.php?action=register', {
         method: 'POST',
         body: JSON.stringify(data)
     }).then(res => res.json()).then(data => {

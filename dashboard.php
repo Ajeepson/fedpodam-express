@@ -31,7 +31,7 @@ $orders = $stmt->fetchAll();
             <tr>
                 <td>#<?php echo $o['id']; ?></td>
                 <td><?php echo $o['created_at']; ?></td>
-                <td>$<?php echo $o['total_amount']; ?></td>
+                <td>₦<?php echo number_format($o['total_amount'], 2); ?></td>
                 <td><?php echo $o['status'] ?? 'Pending'; ?></td>
                 <td><?php echo $o['tracking_number'] ?? 'N/A'; ?></td>
             </tr>

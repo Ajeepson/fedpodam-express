@@ -1,0 +1,22 @@
+-- Populate Chatbot with more questions
+INSERT INTO bot_responses (keyword, response) VALUES 
+('payment', 'We accept Paystack (Cards, Bank Transfer) and Cash on Delivery.'),
+('delivery', 'Delivery typically takes 3-5 business days depending on your location.'),
+('location', 'We are located at Federal Polytechnic Damaturu, Yobe State.'),
+('hours', 'Our online store is open 24/7. Support is available 9 AM - 5 PM.'),
+('refund', 'Refunds are processed within 7 days for eligible returns.'),
+('track', 'You can track your order in the Dashboard under "Your Orders".'),
+('cancel', 'To cancel an order, please contact support immediately or check your dashboard.'),
+('support', 'You can reach support at support@fedpodam.com or call +234 800 000 0000.'),
+('account', 'You can manage your account details in the Dashboard after logging in.'),
+('password', 'If you forgot your password, please contact support to reset it.'),
+('adire', 'We have a great collection of Adire Attire in our Wears category!'),
+('food', 'Check out our Food category for fresh and packaged items.'),
+('electronics', 'We sell top-quality electronics including phones, laptops, and accessories.'),
+('register', 'Click "Register" in the menu to create a new account.'),
+('login', 'Click "Login" in the menu to access your account.'),
+('discount', 'Look out for our banners on the homepage for the latest discounts!'),
+('promo', 'Promo codes can be applied at checkout if available.'),
+('bulk', 'For bulk orders, please contact us directly for special pricing.'),
+('naira', 'All our prices are in Nigerian Naira (₦).'),
+('scam', 'We are a legitimate service operated within Fedpodam. Your transactions are secure.');

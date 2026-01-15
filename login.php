@@ -23,7 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
-    fetch('api.php?action=login', {
+    fetch('api/api.php?action=login', {
         method: 'POST',
         body: JSON.stringify(data)
     }).then(res => res.json()).then(data => {

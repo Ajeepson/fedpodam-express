@@ -34,7 +34,7 @@
             const search = document.getElementById('search-input').value;
             const category = document.getElementById('category-select').value;
 
-            fetch(`api.php?action=get_products&search=${search}&category=${category}`)
+            fetch(`api/api.php?action=get_products&search=${search}&category=${category}`)
                 .then(response => response.json())
                 .then(data => {
                     const grid = document.getElementById('product-list');
@@ -49,7 +49,7 @@
                                 <div class="card-body">
                                     <h3>${product.name}</h3>
                                     <p>${product.description.substring(0, 50)}...</p>
-                                    <div class="price">$${product.price}</div>
+                                    <div class="price">${new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price)}</div>
                                     <button class="btn-buy" onclick="addToCart(${product.id})">Add to Cart</button>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
         }
 
         function loadBanners() {
-            fetch('api.php?action=get_banners')
+            fetch('api/api.php?action=get_banners')
                 .then(res => res.json())
                 .then(data => {
                     const container = document.getElementById('hero-container');
@@ -82,7 +82,7 @@
 
         // 2. Cart Logic (Simple Alert)
         function addToCart(id) {
-            fetch('api.php?action=add_to_cart', {
+            fetch('api/api.php?action=add_to_cart', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ id: id })

@@ -36,13 +36,13 @@ if (!empty($_SESSION['cart'])) {
             <?php foreach ($cartItems as $item): ?>
             <tr>
                 <td><?php echo htmlspecialchars($item['name']); ?></td>
-                <td>$<?php echo $item['price']; ?></td>
+                <td>₦<?php echo number_format($item['price'], 2); ?></td>
                 <td><?php echo $item['qty']; ?></td>
-                <td>$<?php echo $item['price'] * $item['qty']; ?></td>
+                <td>₦<?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
             </tr>
             <?php endforeach; ?>
         </table>
-        <h3>Total: $<?php echo number_format($total, 2); ?></h3>
+        <h3>Total: ₦<?php echo number_format($total, 2); ?></h3>
         <a href="checkout.php?total=<?php echo $total; ?>" class="btn-buy" style="display:inline-block; text-align:center; text-decoration:none;">Proceed to Checkout</a>
     <?php endif; ?>
 </div>

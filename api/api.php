@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
 header('Content-Type: application/json');
 
@@ -8,6 +8,13 @@ $action = $_GET['action'] ?? '';
 // 0. Fetch Homepage Banners
 if ($action === 'get_banners') {
     $stmt = $pdo->query("SELECT * FROM banners ORDER BY id DESC");
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
+// 0.1 Fetch Categories
+if ($action === 'get_categories') {
+    $stmt = $pdo->query("SELECT * FROM categories ORDER BY name ASC");
     echo json_encode($stmt->fetchAll());
     exit;
 }
@@ -110,15 +117,16 @@ if ($action === 'place_order') {
     $input = json_decode(file_get_contents('php://input'), true);
     $total = $input['total'];
     $userId = $_SESSION['user_id'];
+    $paymentRef = $input['payment_ref'] ?? 'COD'; // Paystack Reference
 
     // Create Order
-    $stmt = $pdo->prepare("INSERT INTO orders (customer_id, total_amount) VALUES (?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO orders (customer_id, total_amount, status) VALUES (?, ?, 'processing')");
     $stmt->execute([$userId, $total]);
     $orderId = $pdo->lastInsertId();
 
     // Create Shipping
-    $stmt = $pdo->prepare("INSERT INTO shipping (order_id, shipping_address, status) VALUES (?, ?, 'Processing')");
-    $stmt->execute([$orderId, $input['address']]);
+    $stmt = $pdo->prepare("INSERT INTO shipping (order_id, shipping_address, tracking_number, status) VALUES (?, ?, ?, 'Processing')");
+    $stmt->execute([$orderId, $input['address'], $paymentRef]);
 
     // Clear Cart
     unset($_SESSION['cart']);
@@ -181,6 +189,28 @@ if ($action === 'admin_add_product') {
     exit;
 }
 
+// 3.1.5 Admin: Update Product
+if ($action === 'admin_update_product') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category=?, image_url=?, stock_quantity=? WHERE id=?");
+    $stmt->execute([$input['name'], $input['description'], $input['price'], $input['category'], $input['image_url'], $input['stock'], $input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.1.6 Admin: Delete Product
+if ($action === 'admin_delete_product') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 // 3.2 Admin: Update Order Status
 if ($action === 'admin_update_order') {
     if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
@@ -211,6 +241,77 @@ if ($action === 'admin_delete_banner') {
     $input = json_decode(file_get_contents('php://input'), true);
     $stmt = $pdo->prepare("DELETE FROM banners WHERE id = ?");
     $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.5 Admin: Add Category
+if ($action === 'admin_add_category') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    try {
+        $stmt = $pdo->prepare("INSERT INTO categories (name) VALUES (?)");
+        $stmt->execute([$input['name']]);
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Category likely exists']);
+    }
+    exit;
+}
+
+// 3.6 Admin: Delete Category
+if ($action === 'admin_delete_category') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 1.9 Get Product Reviews
+if ($action === 'get_reviews') {
+    $id = $_GET['id'] ?? 0;
+    $stmt = $pdo->prepare("
+        SELECT r.*, c.full_name 
+        FROM reviews r 
+        JOIN customers c ON r.customer_id = c.id 
+        WHERE r.product_id = ? 
+        ORDER BY r.created_at DESC
+    ");
+    $stmt->execute([$id]);
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
+// 2.0 Add Review
+if ($action === 'add_review') {
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false, 'message' => 'Please login to review']);
+        exit;
+    }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $pid = $input['product_id'];
+    $uid = $_SESSION['user_id'];
+    $rating = (int)$input['rating'];
+    $comment = htmlspecialchars($input['comment']);
+
+    $stmt = $pdo->prepare("INSERT INTO reviews (product_id, customer_id, rating, comment) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$pid, $uid, $rating, $comment]);
+
+    // Update Product Aggregates
+    $stmt = $pdo->prepare("
+        UPDATE products p 
+        SET 
+            review_count = (SELECT COUNT(*) FROM reviews WHERE product_id = p.id),
+            average_rating = (SELECT AVG(rating) FROM reviews WHERE product_id = p.id)
+        WHERE p.id = ?
+    ");
+    $stmt->execute([$pid]);
+
     echo json_encode(['success' => true]);
     exit;
 }

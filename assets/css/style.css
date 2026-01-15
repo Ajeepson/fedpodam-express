@@ -282,3 +282,22 @@ th { background-color: var(--secondary-bg); }
     padding: 1rem;
     border-radius: 4px;
 }
+
+/* Reviews */
+.review-section {
+    margin-top: 2rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.review-card {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.star-rating {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
