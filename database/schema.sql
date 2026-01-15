@@ -84,3 +84,16 @@ INSERT INTO products (name, description, price, image_url, category) VALUES
 INSERT INTO bot_responses (keyword, response) VALUES 
 ('hello', 'Hi there! Welcome to Fedpodam Express. How can I help you?'),
 ('shipping', 'We ship worldwide! Delivery usually takes 3-5 business days.');
+
+-- 8. Homepage Banners (Dynamic Content)
+CREATE TABLE banners (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    subtitle VARCHAR(255),
+    image_url VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Seed Data: Banners
+INSERT INTO banners (title, subtitle, image_url) VALUES 
+('Grand Opening Sale', 'Get 50% off on all electronics this week!', 'https://placehold.co/1200x300/1e3a8a/white?text=Grand+Opening');

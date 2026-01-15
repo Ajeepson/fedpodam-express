@@ -5,11 +5,48 @@ header('Content-Type: application/json');
 
 $action = $_GET['action'] ?? '';
 
+// 0. Fetch Homepage Banners
+if ($action === 'get_banners') {
+    $stmt = $pdo->query("SELECT * FROM banners ORDER BY id DESC");
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
 // 1. Fetch Products
 if ($action === 'get_products') {
-    $stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC");
+    $search = $_GET['search'] ?? '';
+    $category = $_GET['category'] ?? '';
+    
+    $sql = "SELECT * FROM products WHERE 1=1";
+    $params = [];
+
+    if ($search) {
+        $sql .= " AND (name LIKE ? OR description LIKE ?)";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+    }
+
+    if ($category && $category !== 'All') {
+        $sql .= " AND category = ?";
+        $params[] = $category;
+    }
+
+    $sql .= " ORDER BY id DESC";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $products = $stmt->fetchAll();
     echo json_encode($products);
+    exit;
+}
+
+// 1.1 Get Single Product Details
+if ($action === 'get_product') {
+    $id = $_GET['id'] ?? 0;
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt->execute([$id]);
+    $product = $stmt->fetch();
+    echo json_encode($product ?: null);
     exit;
 }
 
@@ -114,6 +151,67 @@ if ($action === 'chat') {
     }
 
     echo json_encode(['reply' => $reply]);
+    exit;
+}
+
+// 3. Admin: Login
+if ($action === 'admin_login') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
+    $stmt->execute([$input['username']]);
+    $admin = $stmt->fetch();
+
+    if ($admin && password_verify($input['password'], $admin['password_hash'])) {
+        $_SESSION['admin_id'] = $admin['id'];
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid credentials']);
+    }
+    exit;
+}
+
+// 3.1 Admin: Add Product
+if ($action === 'admin_add_product') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category, image_url, stock_quantity) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$input['name'], $input['description'], $input['price'], $input['category'], $input['image_url'], $input['stock']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.2 Admin: Update Order Status
+if ($action === 'admin_update_order') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("UPDATE shipping SET status = ? WHERE order_id = ?");
+    $stmt->execute([$input['status'], $input['order_id']]);
+    
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.3 Admin: Add Banner
+if ($action === 'admin_add_banner') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("INSERT INTO banners (title, subtitle, image_url) VALUES (?, ?, ?)");
+    $stmt->execute([$input['title'], $input['subtitle'], $input['image_url']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.4 Admin: Delete Banner
+if ($action === 'admin_delete_banner') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM banners WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
     exit;
 }
 ?>
