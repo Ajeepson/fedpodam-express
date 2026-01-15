@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEDPODAM Express - Your Local Marketplace</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to match the user's provided CSS */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa; /* Matches the user's background color */
+            color: #212529; /* Matches the user's text color */
+        }
+        /* User-provided CSS for buttons and chat */
+        .btn-warning{background:#ff6600;border-color:#ff6600}
+        #lubbyy-btn{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#ff6600;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.15);z-index:9999}
+        #lubbyy-chat{position:fixed;right:18px;bottom:86px;width:360px;height:480px;background:#fff;border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.12);display:flex;flex-direction:column;overflow:hidden;display:none;z-index:9999}
+        #lubbyy-header{background:#ff6600;color:#fff;padding:12px;font-weight:700}
+        #lubbyy-body{flex:1;padding:12px;overflow-y:auto}
+        #lubbyy-input{padding:10px;border-top:1px solid #eee}
+        #lubbyy-input input{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
+        .msg{margin-bottom:8px;font-size:14px}
+        .msg b{display:block}
+        @media (max-width:600px){#lubbyy-chat{width:92%;right:4%;bottom:80px}}
+    </style>
+</head>
+<body>
+
+    <!-- Main Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Company Logo and Name -->
+            <div class="flex items-center space-x-2">
+                <img src="images/logo.png" onerror="this.onerror=null; this.src='https://placehold.co/150x50/ff6600/ffffff?text=FEDPODAM+Logo';" alt="FEDPODAM Express Logo" class="h-10 rounded-lg">
+                <span class="text-xl font-bold text-gray-800 hidden md:block">FEDPODAM Express</span>
+            </div>
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-[#ff6600] transition-colors duration-200">Home</a>
+                <a href="shop.html" class="text-gray-600 hover:text-[#ff6600] transition-colors duration-200">Shop</a>
+                <a href="#" class="text-gray-600 hover:text-[#ff6600] transition-colors duration-200">About Us</a>
+                <a href="#" class="text-gray-600 hover:text-[#ff6600] transition-colors duration-200">Contact</a>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button class="text-gray-600 hover:text-[#ff6600]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- New Welcome Section at the top -->
+        <section class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-2">Welcome to FEDPODAM Express!</h2>
+            <p class="text-center text-gray-600 mb-8">Your trusted marketplace for quality goods from Yobe and Borno states.</p>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">Why Thousands Trust FEDPODAM Express</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Card 1: Local Focus -->
+                <div class="bg-white p-6 rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <div class="mb-4 text-[#ff6600]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-xl mb-2">Empowering Local Businesses</h3>
+                    <p class="text-gray-600">
+                        Every purchase you make directly supports local artisans and traders in Yobe and Borno states. It’s more than a transaction; it's community growth.
+                    </p>
+                </div>
+                <!-- Card 2: Quality Guarantee -->
+                <div class="bg-white p-6 rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <div class="mb-4 text-[#ff6600]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.118a8 8 0 11-11.236 0 8 8 0 0111.236 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-xl mb-2">Curated for Excellence</h3>
+                    <p class="text-gray-600">
+                        We meticulously select every item to ensure it meets our high standards for quality, authenticity, and value. Shop with confidence.
+                    </p>
+                </div>
+                <!-- Card 3: Fast Delivery -->
+                <div class="bg-white p-6 rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <div class="mb-4 text-[#ff6600]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-xl mb-2">Lightning-Fast Local Shipping</h3>
+                    <p class="text-gray-600">
+                        Why wait? We guarantee quick and reliable delivery across Yobe and Borno states, so you get your products when you need them.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section (moved down) -->
+        <section class="hero bg-white rounded-2xl p-8 md:p-16 mb-12 text-center shadow-lg">
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+                Quality Goods from Yobe & Borno, Delivered to Your Doorstep.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-8">
+                Discover a curated collection of local goods, from unique attires to essential electronics. We bring the best of our community right to you.
+            </p>
+            <a href="shop.html" class="bg-[#ff6600] text-white font-bold py-3 px-8 rounded-full shadow-xl hover:bg-[#e55c00] transition-all duration-300 transform hover:scale-105">
+                Explore Our Collection Today!
+            </a>
+        </section>
+
+        <!-- Shop by Category Section - New content -->
+        <section class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">Shop by Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=Attire" alt="Local Attires" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Attires</span>
+                </a>
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=Cosmetics" alt="Cosmetics" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Cosmetics</span>
+                </a>
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=Tiles" alt="Tiles" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Tiles</span>
+                </a>
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=Shoes" alt="Shoes" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Shoes</span>
+                </a>
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=Electronics" alt="Electronics" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Electronics</span>
+                </a>
+                <a href="#" class="flex flex-col items-center p-4 bg-white rounded-2xl shadow-md transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/100x100/f0f4f8/64748b?text=More" alt="Other Goods" class="w-20 h-20 rounded-full object-cover mb-2">
+                    <span class="text-sm font-semibold text-gray-700">More</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Featured Products Section with pricing and discounts -->
+        <section id="featured" class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">Exclusive Offers & Bestsellers</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Product Card 1: Local Attires -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/600x400/f0f4f8/64748b?text=Adire+Fabric" alt="Adire Fabric" class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-semibold text-lg mb-1">Adire Fabric</h3>
+                        <p class="text-gray-500 text-sm mb-2 h-10 overflow-hidden">
+                            Authentic tie-and-dye fabric, a masterpiece of local craftsmanship. Get it at a special price today!
+                        </p>
+                        <div class="flex justify-center items-center gap-2">
+                            <span class="text-red-500 font-bold text-lg">₦12,500</span>
+                            <span class="text-gray-400 line-through">₦15,000</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-block bg-[#ff6600] text-white font-bold py-2 px-6 rounded-full hover:bg-[#e55c00] transition-colors duration-200">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+                <!-- Product Card 2: Cosmetics -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/600x400/f0f4f8/64748b?text=Liquid+Hand+Wash" alt="Liquid Hand Wash" class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-semibold text-lg mb-1">Liquid Hand Wash</h3>
+                        <p class="text-gray-500 text-sm mb-2 h-10 overflow-hidden">
+                            Gently cleanses and moisturizes. Our best-selling liquid hand wash is now on sale!
+                        </p>
+                        <div class="flex justify-center items-center gap-2">
+                            <span class="text-red-500 font-bold text-lg">₦3,200</span>
+                            <span class="text-gray-400 line-through">₦4,000</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-block bg-[#ff6600] text-white font-bold py-2 px-6 rounded-full hover:bg-[#e55c00] transition-colors duration-200">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+                <!-- Product Card 3: Building Materials -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/600x400/f0f4f8/64748b?text=Premium+Marble" alt="Premium Marble" class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-semibold text-lg mb-1">Premium Marble Tiles</h3>
+                        <p class="text-gray-500 text-sm mb-2 h-10 overflow-hidden">
+                            Unmatched quality and durability. Transform your space with our premium marble tiles.
+                        </p>
+                        <div class="flex justify-center items-center gap-2">
+                            <span class="text-red-500 font-bold text-lg">₦8,000</span>
+                            <span class="text-gray-400 line-through">₦10,000</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-block bg-[#ff6600] text-white font-bold py-2 px-6 rounded-full hover:bg-[#e55c00] transition-colors duration-200">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+                <!-- Product Card 4: Electronics -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden transform transition-transform hover:scale-105">
+                    <img src="https://placehold.co/600x400/f0f4f8/64748b?text=Durable+Radio" alt="Durable Radio" class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <h3 class="font-semibold text-lg mb-1">Durable Local Radio</h3>
+                        <p class="text-gray-500 text-sm mb-2 h-10 overflow-hidden">
+                            Built to last with crystal-clear sound. An essential for every home in Yobe and Borno.
+                        </p>
+                        <div class="flex justify-center items-center gap-2">
+                            <span class="text-red-500 font-bold text-lg">₦5,500</span>
+                            <span class="text-gray-400 line-through">₦7,000</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-block bg-[#ff6600] text-white font-bold py-2 px-6 rounded-full hover:bg-[#e55c00] transition-colors duration-200">
+                            Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials Section -->
+        <section class="bg-gray-100 rounded-2xl p-8 mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">What Our Customers Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <p class="italic text-gray-700 mb-4">
+                        "I was so impressed with the quality of the adire fabric I ordered. The delivery was incredibly fast and the customer service was top-notch. I'll definitely be buying again!"
+                    </p>
+                    <p class="font-semibold text-[#ff6600]">- Fatima A., Maiduguri</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <p class="italic text-gray-700 mb-4">
+                        "Finding genuine local products online can be hard, but FEDPODAM Express is the real deal. The palm sanders I bought were exactly as described and arrived without any issues."
+                    </p>
+                    <p class="font-semibold text-[#ff6600]">- Musa S., Damaturu</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Site Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; Sir, Ajibade — Lubbyy Assist All rights reserved.</p>
+            <p class="mt-2">
+                <a href="#" class="hover:text-[#ffa04d] mx-2">Privacy Policy</a> |
+                <a href="#" class="hover:text-[#ffa04d] mx-2">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- AI Chat Interface -->
+    <div id="lubbyy-chat">
+        <div id="lubbyy-header">FEDPODAM Express Assistant</div>
+        <div id="lubbyy-body">
+            <!-- Chat messages will go here -->
+            <div class="msg"><b>Assistant:</b> Hello there! How can I help you today?</div>
+        </div>
+        <div id="lubbyy-input">
+            <input type="text" placeholder="Type your message..." />
+        </div>
+    </div>
+    <!-- AI Chat Button -->
+    <div id="lubbyy-btn">💬</div>
+
+    <script>
+        // JavaScript for the AI Chat Button functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatBtn = document.getElementById('lubbyy-btn');
+            const chatBox = document.getElementById('lubbyy-chat');
+            const chatInput = chatBox.querySelector('input');
+            const chatBody = chatBox.querySelector('#lubbyy-body');
+
+            // Event listener for the chat button
+            chatBtn.addEventListener('click', () => {
+                const isChatVisible = chatBox.style.display === 'flex';
+                chatBox.style.display = isChatVisible ? 'none' : 'flex';
+                // Focus on the input field when the chat box is opened
+                if (!isChatVisible) {
+                    chatInput.focus();
+                }
+            });
+
+            // Prevent default form submission and handle messages (future implementation)
+            chatInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const userMessage = chatInput.value.trim();
+                    if (userMessage) {
+                        // Append the user's message to the chat body
+                        const userMsgElement = document.createElement('div');
+                        userMsgElement.classList.add('msg');
+                        userMsgElement.innerHTML = `<b>You:</b> ${userMessage}`;
+                        chatBody.appendChild(userMsgElement);
+                        
+                        // Clear the input field
+                        chatInput.value = '';
+
+                        // Scroll to the bottom of the chat body
+                        chatBody.scrollTop = chatBody.scrollHeight;
+
+                        // Simulate a response from the AI (this is where the AI API call would go)
+                        setTimeout(() => {
+                            const aiMsgElement = document.createElement('div');
+                            aiMsgElement.classList.add('msg');
+                            aiMsgElement.innerHTML = `<b>Assistant:</b> I'm sorry, I am not yet able to answer questions. Please check back later.`;
+                            chatBody.appendChild(aiMsgElement);
+                            chatBody.scrollTop = chatBody.scrollHeight;
+                        }, 1000);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
