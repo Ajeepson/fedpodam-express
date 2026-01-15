@@ -9,14 +9,10 @@
 <body>
 
     <!-- Navigation -->
-    <header>
-        <h1><a href="index.php" style="color:white; text-decoration:none;">Fedpodam Express</a></h1>
+    <header class="site-header">
+        <a href="index.php" class="logo">Fedpodam Express</a>
         
-        <div class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
-            ☰
-        </div>
-
-        <nav class="nav-links">
+        <nav>
             <a href="index.php">Home</a>
             <a href="cart.php">Cart (<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>)</a>
             

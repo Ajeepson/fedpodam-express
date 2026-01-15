@@ -2,6 +2,9 @@
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Slogan -->
+        <div class="site-slogan">Fedpodam Express: Bridging Campus & Commerce.</div>
+
         <!-- Dynamic Hero Section -->
         <div id="hero-container" class="hero-section"></div>
 
@@ -19,6 +22,25 @@
         <div id="product-list" class="product-grid">
             <!-- Products will be loaded here via JS -->
             <p>Loading products...</p>
+        </div>
+
+        <!-- Testimonials Section -->
+        <div class="testimonials-section">
+            <h2>What Our Community Says</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"Fedpodam Express made getting my textbooks and snacks so much easier. Delivery to the hostel was super fast!"</p>
+                    <h4>- Amina Y., CS Dept</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"I love the Adire collection! Great quality and it supports local student entrepreneurs."</p>
+                    <h4>- Emeka O., Staff</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Reliable payment options and the customer support is actually helpful. Highly recommended."</p>
+                    <h4>- Zainab B., SLT Dept</h4>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -91,6 +113,10 @@
             .then(data => {
                 if(data.success) alert('Added to cart!');
                 location.reload(); // Update cart count in header
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Error connecting to API. Check console.');
             });
         }
     </script>
