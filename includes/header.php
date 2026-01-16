@@ -21,7 +21,10 @@
             <a href="index.php">Home</a>
             <a href="cart.php">Cart (<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>)</a>
             
-            <?php if(isset($_SESSION['user_id'])): ?>
+            <?php if(isset($_SESSION['admin_id'])): ?>
+                <a href="admin_dashboard.php">Admin Panel</a>
+                <a href="logout.php">Logout</a>
+            <?php elseif(isset($_SESSION['user_id'])): ?>
                 <a href="dashboard.php">Dashboard</a>
                 <a href="logout.php">Logout</a>
             <?php else: ?>

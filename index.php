@@ -41,20 +41,15 @@
         <!-- Testimonials Section -->
         <div class="testimonials-section">
             <h2>What Our Community Says</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p>"Fedpodam Express made getting my textbooks and snacks so much easier. Delivery to the hostel was super fast!"</p>
-                    <h4>- Amina Y., CS Dept</h4>
-                </div>
-                <div class="testimonial-card">
-                    <p>"I love the Adire collection! Great quality and it supports local student entrepreneurs."</p>
-                    <h4>- Emeka O., Staff</h4>
-                </div>
-                <div class="testimonial-card">
-                    <p>"Reliable payment options and the customer support is actually helpful. Highly recommended."</p>
-                    <h4>- Zainab B., SLT Dept</h4>
-                </div>
+            <div class="testimonial-grid" id="testimonial-list">
+                <p>Loading testimonials...</p>
             </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 style="text-align:center;">Frequently Asked Questions</h2>
+            <div id="faq-list"><p style="text-align:center;">Loading FAQs...</p></div>
         </div>
     </div>
 
@@ -66,6 +61,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadProducts(true);
             loadBanners();
+            loadTestimonials();
+            loadFaqs();
         });
 
         function loadProducts(reset = false) {
@@ -150,6 +147,38 @@
                         container.appendChild(div);
                     });
                 });
+        }
+
+        function loadTestimonials() {
+            fetch('api/api.php?action=get_testimonials')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('testimonial-list');
+                    container.innerHTML = '';
+                    data.forEach(t => {
+                        const div = document.createElement('div');
+                        div.className = 'testimonial-card';
+                        div.innerHTML = `<p>"${t.content}"</p><h4>- ${t.name}, ${t.role}</h4>`;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+
+        function loadFaqs() {
+            fetch('api/api.php?action=get_faqs')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('faq-list');
+                    container.innerHTML = '';
+                    data.forEach(f => {
+                        const div = document.createElement('div');
+                        div.className = 'faq-item';
+                        div.innerHTML = `<h3>${f.question}</h3><p>${f.answer}</p>`;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(err => console.error(err));
         }
 
         // 2. Cart Logic (Simple Alert)

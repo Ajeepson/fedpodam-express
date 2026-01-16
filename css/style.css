@@ -234,12 +234,58 @@ th { background-color: var(--secondary-bg); }
 }
 
 /* Admin Panel */
-.admin-header {
-    background: #333;
-    color: white;
-    padding: 1rem;
-    margin-bottom: 2rem;
+.admin-wrapper {
+    display: flex;
+    min-height: calc(100vh - 80px); /* Adjust based on header height */
+    margin-top: 1rem;
+    background: white;
     border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: var(--primary-dark);
+    color: white;
+    flex-shrink: 0;
+}
+
+.admin-nav-item {
+    display: block;
+    padding: 15px 20px;
+    color: #ccc;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.admin-nav-item:hover, .admin-nav-item.active {
+    background: var(--primary-color);
+    color: white;
+    padding-left: 25px;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    background: #f8f9fa;
+    overflow-y: auto;
+}
+
+.admin-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .badge {
@@ -279,6 +325,12 @@ th { background-color: var(--secondary-bg); }
 .testimonial-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; }
 .testimonial-card p { font-style: italic; color: #555; }
 .testimonial-card h4 { margin-top: 1rem; color: var(--primary-color); font-weight: bold; }
+
+/* FAQ Section */
+.faq-section { margin: 4rem 0; max-width: 800px; margin-left: auto; margin-right: auto; }
+.faq-item { background: white; border-radius: 8px; margin-bottom: 1rem; padding: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.faq-item h3 { margin-top: 0; color: var(--primary-color); font-size: 1.1rem; }
+.faq-item p { margin-bottom: 0; color: #555; line-height: 1.6; }
 
 /* Advanced Footer */
 .site-footer {

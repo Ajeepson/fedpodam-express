@@ -122,3 +122,47 @@ CREATE TABLE reviews (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 );
+
+-- 11. Testimonials Table
+CREATE TABLE testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(100), -- e.g. "CS Dept", "Staff"
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 12. Site Settings Table
+CREATE TABLE site_settings (
+    setting_key VARCHAR(50) PRIMARY KEY,
+    setting_value TEXT
+);
+
+-- Seed Data: Customers (Default Login: customer@example.com / password)
+INSERT INTO customers (full_name, email, password_hash, phone, address) VALUES 
+('John Doe', 'customer@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08012345678', '123 Student Hostel, Fedpodam');
+
+-- Seed Data: Admins (Default Login: admin / password)
+INSERT INTO admins (username, password_hash, role) VALUES 
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'superadmin');
+
+-- Seed Data: Testimonials
+INSERT INTO testimonials (name, role, content) VALUES 
+('Amina Y.', 'CS Dept', 'Fedpodam Express made getting my textbooks and snacks so much easier. Delivery to the hostel was super fast!'),
+('Emeka O.', 'Staff', 'I love the Adire collection! Great quality and it supports local student entrepreneurs.');
+
+-- Seed Data: Site Settings
+INSERT INTO site_settings (setting_key, setting_value) VALUES 
+('contact_phone', '+234 800 123 4567'),
+('contact_email', 'support@fedpodam.com'),
+('contact_address', 'Federal Polytechnic Damaturu, Yobe State.');
+
+-- Seed Data: Customers
+-- Email: customer@example.com | Password: password
+INSERT INTO customers (full_name, email, password_hash, phone, address) VALUES 
+('John Doe', 'customer@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '08012345678', '123 Student Hostel, Fedpodam');
+
+-- Seed Data: Admins
+-- Username: admin | Password: password
+INSERT INTO admins (username, password_hash, role) VALUES 
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'superadmin');

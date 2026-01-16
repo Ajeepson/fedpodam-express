@@ -1,3 +1,15 @@
+<?php
+// Fetch settings for footer display
+$f_settings = [];
+if (isset($pdo)) {
+    try {
+        $stmt = $pdo->query("SELECT * FROM site_settings");
+        $f_settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    } catch (PDOException $e) {
+        // Table might not exist yet
+    }
+}
+?>
     <footer class="site-footer">
         <div class="footer-grid">
             <!-- Company Info -->
@@ -21,9 +33,9 @@
             <!-- Contact & Map -->
             <div class="footer-col">
                 <h3>Contact Us</h3>
-                <p>📍 Federal Polytechnic Damaturu, Yobe State.</p>
-                <p>📞 +234 800 123 4567</p>
-                <p>✉️ support@fedpodam.com</p>
+                <p>📍 <?php echo htmlspecialchars($f_settings['contact_address'] ?? 'Federal Polytechnic Damaturu'); ?></p>
+                <p>📞 <?php echo htmlspecialchars($f_settings['contact_phone'] ?? '+234 800 000 0000'); ?></p>
+                <p>✉️ <?php echo htmlspecialchars($f_settings['contact_email'] ?? 'support@fedpodam.com'); ?></p>
                 <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3936.596839977966!2d11.9666!3d11.7500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDQ1JzAwLjAiTiAxMcKwNTgnMDAuMCJF!5e0!3m2!1sen!2sng!4v1600000000000!5m2!1sen!2sng" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>

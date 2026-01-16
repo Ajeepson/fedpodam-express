@@ -19,6 +19,27 @@ if ($action === 'get_categories') {
     exit;
 }
 
+// 0.2 Fetch Testimonials
+if ($action === 'get_testimonials') {
+    $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY id DESC");
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
+// 0.3 Fetch Site Settings
+if ($action === 'get_settings') {
+    $stmt = $pdo->query("SELECT * FROM site_settings");
+    echo json_encode($stmt->fetchAll(PDO::FETCH_KEY_PAIR));
+    exit;
+}
+
+// 0.4 Fetch FAQs
+if ($action === 'get_faqs') {
+    $stmt = $pdo->query("SELECT * FROM faqs ORDER BY id ASC");
+    echo json_encode($stmt->fetchAll());
+    exit;
+}
+
 // 1. Fetch Products
 if ($action === 'get_products') {
     $search = $_GET['search'] ?? '';
@@ -318,6 +339,110 @@ if ($action === 'add_review') {
     ");
     $stmt->execute([$pid]);
 
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.7 Admin: Delete Customer
+if ($action === 'admin_delete_customer') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM customers WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.8 Admin: Add Bot Response
+if ($action === 'admin_add_bot_response') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("INSERT INTO bot_responses (keyword, response) VALUES (?, ?)");
+    $stmt->execute([$input['keyword'], $input['response']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.9 Admin: Delete Bot Response
+if ($action === 'admin_delete_bot_response') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM bot_responses WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.10 Admin: Add Testimonial
+if ($action === 'admin_add_testimonial') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("INSERT INTO testimonials (name, role, content) VALUES (?, ?, ?)");
+    $stmt->execute([$input['name'], $input['role'], $input['content']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 3.11 Admin: Delete Testimonial
+if ($action === 'admin_delete_testimonial') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM testimonials WHERE id = ?");
+    $stmt->execute([$input['id']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 4.0 Admin: Update Settings
+if ($action === 'admin_update_settings') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    foreach ($input as $key => $value) {
+        $stmt = $pdo->prepare("INSERT INTO site_settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = ?");
+        $stmt->execute([$key, $value, $value]);
+    }
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 4.1 Admin: Create New Admin
+if ($action === 'admin_create_admin') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $passHash = password_hash($input['password'], PASSWORD_DEFAULT);
+    
+    $stmt = $pdo->prepare("INSERT INTO admins (username, password_hash) VALUES (?, ?)");
+    $stmt->execute([$input['username'], $passHash]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 4.2 Admin: Add FAQ
+if ($action === 'admin_add_faq') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("INSERT INTO faqs (question, answer) VALUES (?, ?)");
+    $stmt->execute([$input['question'], $input['answer']]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// 4.3 Admin: Delete FAQ
+if ($action === 'admin_delete_faq') {
+    if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $stmt = $pdo->prepare("DELETE FROM faqs WHERE id = ?");
+    $stmt->execute([$input['id']]);
     echo json_encode(['success' => true]);
     exit;
 }
