@@ -26,20 +26,18 @@
                 <p>✉️ support@fedpodam.com</p>
                 <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3936.596839977966!2d11.9666!3d11.7500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDQ1JzAwLjAiTiAxMcKwNTgnMDAuMCJF!5e0!3m2!1sen!2sng!4v1600000000000!5m2!1sen!2sng" allowfullscreen="" loading="lazy"></iframe>
             </div>
-
-            <!-- Social Media -->
-            <div class="footer-col">
-                <h3>Follow Us</h3>
-                <div class="social-links">
-                    <a href="#">🔵 FB</a>
-                    <a href="#">🐦 TW</a>
-                    <a href="#">📸 IG</a>
-                    <a href="#">💼 LN</a>
-                </div>
-            </div>
         </div>
         <div class="footer-bottom">
-            &copy; <?php echo date('Y'); ?> Fedpodam Express. All Rights Reserved.
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-pinterest"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <p>&copy; <?php echo date('Y'); ?> Fedpodam Express. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -54,7 +52,7 @@
             <div style="padding:8px; background:#eee; border-radius:4px; margin-bottom:8px;">Hello! I am the Fedpodam Bot. Ask me about shipping or products!</div>
         </div>
         <div id="lubbyy-input">
-            <input type="text" id="chat-input" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <input type="text" id="chat-input" placeholder="Type a message..." style="background-color:#1F2937" onkeypress="handleEnter(event)">
         </div>
     </div>
 
@@ -104,7 +102,7 @@
             div.style.padding = '8px';
             div.style.borderRadius = '4px';
             div.style.marginBottom = '8px';
-            div.style.background = sender === 'user' ? '#ff6600' : '#eee';
+            div.style.background = sender === 'user' ? '#1e3a8a' : '#eee';
             div.style.color = sender === 'user' ? '#fff' : '#333';
             div.style.alignSelf = sender === 'user' ? 'flex-end' : 'flex-start';
             div.style.maxWidth = '80%';

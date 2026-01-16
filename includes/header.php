@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fedpodam Express | Interactive E-Commerce</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
 
@@ -12,7 +13,11 @@
     <header class="site-header">
         <a href="index.php" class="logo">Fedpodam Express</a>
         
-        <nav>
+        <div class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+            ☰
+        </div>
+
+        <nav class="nav-links">
             <a href="index.php">Home</a>
             <a href="cart.php">Cart (<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>)</a>
             

@@ -28,9 +28,12 @@ CREATE TABLE products (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
+    old_price DECIMAL(10, 2) DEFAULT NULL,
     stock_quantity INT DEFAULT 100,
     image_url VARCHAR(255),
     category VARCHAR(100),
+    average_rating DECIMAL(3,2) DEFAULT 0,
+    review_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -75,10 +78,10 @@ CREATE TABLE bot_responses (
 );
 
 -- Seed Data: Products
-INSERT INTO products (name, description, price, image_url, category) VALUES 
-('Magenta Hoodie', 'Premium cotton hoodie in vibrant magenta.', 49.99, 'https://placehold.co/300x300/d500f9/white?text=Hoodie', 'Apparel'),
-('Wireless Headphones', 'Noise cancelling over-ear headphones.', 129.50, 'https://placehold.co/300x300/333/white?text=Audio', 'Electronics'),
-('Smart Watch', 'Track your fitness and notifications.', 199.99, 'https://placehold.co/300x300/444/white?text=Watch', 'Electronics');
+INSERT INTO products (name, description, price, old_price, image_url, category) VALUES 
+('Royal Blue Hoodie', 'Premium cotton hoodie in school colors.', 12500.00, 15000.00, 'https://placehold.co/300x300/1e3a8a/white?text=Hoodie', 'Apparel'),
+('Wireless Headphones', 'Noise cancelling over-ear headphones.', 42000.00, 50000.00, 'https://placehold.co/300x300/333/white?text=Audio', 'Electronics'),
+('Smart Watch', 'Track your fitness and notifications.', 85000.00, NULL, 'https://placehold.co/300x300/444/white?text=Watch', 'Electronics');
 
 -- Seed Data: Chatbot
 INSERT INTO bot_responses (keyword, response) VALUES 
@@ -107,3 +110,15 @@ CREATE TABLE categories (
 
 -- Seed Data: Categories
 INSERT INTO categories (name) VALUES ('Apparel'), ('Electronics'), ('Home'), ('Footwear');
+
+-- 10. Reviews Table
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+);

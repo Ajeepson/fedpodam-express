@@ -24,6 +24,10 @@ if ($action === 'get_products') {
     $search = $_GET['search'] ?? '';
     $category = $_GET['category'] ?? '';
     
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = 8;
+    $offset = ($page - 1) * $limit;
+    
     $sql = "SELECT * FROM products WHERE 1=1";
     $params = [];
 
@@ -38,7 +42,7 @@ if ($action === 'get_products') {
         $params[] = $category;
     }
 
-    $sql .= " ORDER BY id DESC";
+    $sql .= " ORDER BY id DESC LIMIT $limit OFFSET $offset";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
@@ -183,8 +187,9 @@ if ($action === 'admin_add_product') {
     if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
     
     $input = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category, image_url, stock_quantity) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$input['name'], $input['description'], $input['price'], $input['category'], $input['image_url'], $input['stock']]);
+    $oldPrice = !empty($input['old_price']) ? $input['old_price'] : null;
+    $stmt = $pdo->prepare("INSERT INTO products (name, description, price, old_price, category, image_url, stock_quantity) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$input['name'], $input['description'], $input['price'], $oldPrice, $input['category'], $input['image_url'], $input['stock']]);
     echo json_encode(['success' => true]);
     exit;
 }
@@ -194,8 +199,9 @@ if ($action === 'admin_update_product') {
     if (!isset($_SESSION['admin_id'])) { echo json_encode(['success'=>false]); exit; }
     
     $input = json_decode(file_get_contents('php://input'), true);
-    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category=?, image_url=?, stock_quantity=? WHERE id=?");
-    $stmt->execute([$input['name'], $input['description'], $input['price'], $input['category'], $input['image_url'], $input['stock'], $input['id']]);
+    $oldPrice = !empty($input['old_price']) ? $input['old_price'] : null;
+    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, old_price=?, category=?, image_url=?, stock_quantity=? WHERE id=?");
+    $stmt->execute([$input['name'], $input['description'], $input['price'], $oldPrice, $input['category'], $input['image_url'], $input['stock'], $input['id']]);
     echo json_encode(['success' => true]);
     exit;
 }

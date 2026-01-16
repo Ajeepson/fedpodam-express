@@ -17,6 +17,12 @@
                     return;
                 }
                 
+                let priceHtml = '';
+                if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
+                    priceHtml += `<span class="old-price" style="font-size:1.2rem;">${new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.old_price)}</span> `;
+                }
+                priceHtml += new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
+
                 const html = `
                     <div style="display:flex; gap:2rem; flex-wrap:wrap; background:white; padding:2rem; border-radius:8px;">
                         <div style="flex:1; min-width:300px;">
@@ -24,13 +30,17 @@
                         </div>
                         <div style="flex:1;">
                             <h2 style="margin-top:0;">${product.name}</h2>
-                            <div class="price" style="font-size:2rem; margin-bottom:1rem;">${new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price)}</div>
+                            <div class="price" style="font-size:2rem; margin-bottom:1rem;">${priceHtml}</div>
                             <div class="star-rating" style="margin-bottom:1rem;">${'★'.repeat(Math.round(product.average_rating || 0))}${'☆'.repeat(5 - Math.round(product.average_rating || 0))} <span style="font-size:0.9rem; color:#666;">(${product.review_count || 0} reviews)</span></div>
                             <p><strong>Category:</strong> ${product.category}</p>
                             <p><strong>Stock:</strong> ${product.stock_quantity} units available</p>
                             <p>${product.description}</p>
                             <br>
-                            <button class="btn-buy" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="btn-buy" onclick="addToCart(${product.id})" style="width:auto; padding: 10px 20px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px;">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg> Add to Cart
+                            </button>
                         </div>
                     </div>
 

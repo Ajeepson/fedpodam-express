@@ -8,21 +8,35 @@
         <!-- Dynamic Hero Section -->
         <div id="hero-container" class="hero-section"></div>
 
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search products...">
-            <select id="category-select">
-                <option value="All">All Categories</option>
-                <option value="Apparel">Apparel</option>
-                <option value="Electronics">Electronics</option>
-            </select>
-            <button class="btn-buy" style="width:auto;" onclick="loadProducts()">Search</button>
+        <div class="main-layout">
+            <!-- Sidebar (Filters) -->
+            <aside class="sidebar">
+                <div class="sidebar-filter">
+                    <h3>Filter Products</h3>
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <select id="category-select">
+                        <option value="All">All Categories</option>
+                        <option value="Apparel">Apparel</option>
+                        <option value="Electronics">Electronics</option>
+                    </select>
+                    <button class="btn-buy" onclick="loadProducts(true)">Apply Filters</button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="content-area">
+                <h2 style="margin-top:0;">Featured Products</h2>
+                <div id="product-list" class="product-grid">
+                    <!-- Products will be loaded here via JS -->
+                    <p>Loading products...</p>
+                </div>
+                <!-- Load More Button -->
+                <div style="text-align:center; margin: 2rem 0;">
+                    <button id="load-more-btn" class="btn-buy" style="width:auto; display:none;" onclick="loadMore()">Load More</button>
+                </div>
+            </main>
         </div>
 
-        <h2>Featured Products</h2>
-        <div id="product-list" class="product-grid">
-            <!-- Products will be loaded here via JS -->
-            <p>Loading products...</p>
-        </div>
 
         <!-- Testimonials Section -->
         <div class="testimonials-section">
@@ -46,23 +60,43 @@
 
     <!-- JavaScript Logic -->
     <script>
+        let currentPage = 1;
+
         // 1. Load Products on Page Load
         document.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
+            loadProducts(true);
             loadBanners();
         });
 
-        function loadProducts() {
+        function loadProducts(reset = false) {
+            if (reset) {
+                currentPage = 1;
+                document.getElementById('product-list').innerHTML = '<p>Loading products...</p>';
+            }
+
             const search = document.getElementById('search-input').value;
             const category = document.getElementById('category-select').value;
+            const btn = document.getElementById('load-more-btn');
 
-            fetch(`api/api.php?action=get_products&search=${search}&category=${category}`)
+            fetch(`api/api.php?action=get_products&search=${search}&category=${category}&page=${currentPage}`)
                 .then(response => response.json())
                 .then(data => {
                     const grid = document.getElementById('product-list');
-                    grid.innerHTML = ''; // Clear loading text
+                    if (reset) grid.innerHTML = '';
+                    
+                    if (data.length === 0 && reset) {
+                        grid.innerHTML = '<p>No products found.</p>';
+                        btn.style.display = 'none';
+                        return;
+                    }
                     
                     data.forEach(product => {
+                        let priceHtml = '';
+                        if (product.old_price && parseFloat(product.old_price) > parseFloat(product.price)) {
+                            priceHtml += `<span class="old-price">${new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.old_price)}</span>`;
+                        }
+                        priceHtml += new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
+
                         const card = `
                             <div class="product-card">
                                 <a href="product.php?id=${product.id}">
@@ -71,15 +105,31 @@
                                 <div class="card-body">
                                     <h3>${product.name}</h3>
                                     <p>${product.description.substring(0, 50)}...</p>
-                                    <div class="price">${new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price)}</div>
-                                    <button class="btn-buy" onclick="addToCart(${product.id})">Add to Cart</button>
+                                    <div class="price">${priceHtml}</div>
+                                    <button class="btn-buy" onclick="addToCart(${product.id})" title="Add to Cart">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         `;
                         grid.innerHTML += card;
                     });
+
+                    // Hide button if less than limit returned (end of list)
+                    if (data.length < 8) {
+                        btn.style.display = 'none';
+                    } else {
+                        btn.style.display = 'inline-block';
+                    }
                 })
                 .catch(err => console.error('Error loading products:', err));
+        }
+
+        function loadMore() {
+            currentPage++;
+            loadProducts(false);
         }
 
         function loadBanners() {

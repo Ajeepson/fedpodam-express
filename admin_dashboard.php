@@ -73,6 +73,9 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
                     <label>Price</label><input type="number" step="0.01" name="price" required>
                 </div>
                 <div class="form-group">
+                    <label>Old Price (Optional - for discounts)</label><input type="number" step="0.01" name="old_price" id="prodOldPrice" placeholder="e.g. 2000">
+                </div>
+                <div class="form-group">
                     <label>Category</label>
                     <select name="category" style="width:100%; padding:8px;">
                         <?php foreach ($categories as $c): ?>
@@ -201,6 +204,7 @@ function editProduct(p) {
     document.getElementById('prodId').value = p.id;
     document.getElementById('prodName').value = p.name;
     document.getElementById('prodPrice').value = p.price;
+    document.getElementById('prodOldPrice').value = p.old_price;
     document.getElementById('prodImg').value = p.image_url;
     document.getElementById('prodStock').value = p.stock_quantity;
     document.getElementById('prodDesc').value = p.description;
